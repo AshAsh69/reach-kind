@@ -14,16 +14,411 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      analytics: {
+        Row: {
+          id: string
+          metadata: Json | null
+          metric_name: string
+          timestamp: string
+          value: number
+        }
+        Insert: {
+          id?: string
+          metadata?: Json | null
+          metric_name: string
+          timestamp?: string
+          value: number
+        }
+        Update: {
+          id?: string
+          metadata?: Json | null
+          metric_name?: string
+          timestamp?: string
+          value?: number
+        }
+        Relationships: []
+      }
+      events: {
+        Row: {
+          category: Database["public"]["Enums"]["event_category"]
+          created_at: string
+          created_by: string
+          description: string
+          event_date: string
+          id: string
+          location: string | null
+          max_participants: number | null
+          participants: string[] | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["event_category"]
+          created_at?: string
+          created_by: string
+          description: string
+          event_date: string
+          id?: string
+          location?: string | null
+          max_participants?: number | null
+          participants?: string[] | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["event_category"]
+          created_at?: string
+          created_by?: string
+          description?: string
+          event_date?: string
+          id?: string
+          location?: string | null
+          max_participants?: number | null
+          participants?: string[] | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      messages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          message_type: string | null
+          post_id: string
+          sender_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          message_type?: string | null
+          post_id: string
+          sender_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          message_type?: string | null
+          post_id?: string
+          sender_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      moderation_logs: {
+        Row: {
+          action_type: string
+          admin_id: string
+          id: string
+          post_id: string | null
+          reason: string | null
+          timestamp: string
+        }
+        Insert: {
+          action_type: string
+          admin_id: string
+          id?: string
+          post_id?: string | null
+          reason?: string | null
+          timestamp?: string
+        }
+        Update: {
+          action_type?: string
+          admin_id?: string
+          id?: string
+          post_id?: string | null
+          reason?: string | null
+          timestamp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "moderation_logs_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      organizations: {
+        Row: {
+          contact_info: Json | null
+          created_at: string
+          created_by: string | null
+          description: string | null
+          id: string
+          location: string | null
+          name: string
+          type: Database["public"]["Enums"]["organization_type"]
+          updated_at: string
+          verified: boolean | null
+        }
+        Insert: {
+          contact_info?: Json | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          location?: string | null
+          name: string
+          type: Database["public"]["Enums"]["organization_type"]
+          updated_at?: string
+          verified?: boolean | null
+        }
+        Update: {
+          contact_info?: Json | null
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          id?: string
+          location?: string | null
+          name?: string
+          type?: Database["public"]["Enums"]["organization_type"]
+          updated_at?: string
+          verified?: boolean | null
+        }
+        Relationships: []
+      }
+      posts: {
+        Row: {
+          category: Database["public"]["Enums"]["help_category"]
+          created_at: string
+          description: string
+          id: string
+          location: string
+          organization_id: string | null
+          skills_needed: string[] | null
+          status: Database["public"]["Enums"]["post_status"] | null
+          title: string
+          updated_at: string
+          urgency_level: number | null
+          user_id: string
+        }
+        Insert: {
+          category: Database["public"]["Enums"]["help_category"]
+          created_at?: string
+          description: string
+          id?: string
+          location: string
+          organization_id?: string | null
+          skills_needed?: string[] | null
+          status?: Database["public"]["Enums"]["post_status"] | null
+          title: string
+          updated_at?: string
+          urgency_level?: number | null
+          user_id: string
+        }
+        Update: {
+          category?: Database["public"]["Enums"]["help_category"]
+          created_at?: string
+          description?: string
+          id?: string
+          location?: string
+          organization_id?: string | null
+          skills_needed?: string[] | null
+          status?: Database["public"]["Enums"]["post_status"] | null
+          title?: string
+          updated_at?: string
+          urgency_level?: number | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "posts_organization_id_fkey"
+            columns: ["organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          badges: string[] | null
+          bio: string | null
+          created_at: string
+          display_name: string | null
+          id: string
+          location: string | null
+          points: number | null
+          profile_picture: string | null
+          skills: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          badges?: string[] | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          location?: string | null
+          points?: number | null
+          profile_picture?: string | null
+          skills?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          badges?: string[] | null
+          bio?: string | null
+          created_at?: string
+          display_name?: string | null
+          id?: string
+          location?: string | null
+          points?: number | null
+          profile_picture?: string | null
+          skills?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      recommendations: {
+        Row: {
+          created_at: string
+          id: string
+          match_score: number | null
+          post_id: string
+          recommended_helpers: string[] | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          match_score?: number | null
+          post_id: string
+          recommended_helpers?: string[] | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          match_score?: number | null
+          post_id?: string
+          recommended_helpers?: string[] | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "recommendations_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      safety_checks: {
+        Row: {
+          checked_at: string
+          id: string
+          post_id: string
+          review_notes: string | null
+          reviewed_by: string | null
+          risk_score: number | null
+          verification_status:
+            | Database["public"]["Enums"]["verification_status"]
+            | null
+        }
+        Insert: {
+          checked_at?: string
+          id?: string
+          post_id: string
+          review_notes?: string | null
+          reviewed_by?: string | null
+          risk_score?: number | null
+          verification_status?:
+            | Database["public"]["Enums"]["verification_status"]
+            | null
+        }
+        Update: {
+          checked_at?: string
+          id?: string
+          post_id?: string
+          review_notes?: string | null
+          reviewed_by?: string | null
+          risk_score?: number | null
+          verification_status?:
+            | Database["public"]["Enums"]["verification_status"]
+            | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "safety_checks_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "posts"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          id: string
+          role: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Insert: {
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          user_id: string
+        }
+        Update: {
+          id?: string
+          role?: Database["public"]["Enums"]["user_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_role: {
+        Args: { _user_id: string }
+        Returns: Database["public"]["Enums"]["user_role"]
+      }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["user_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      event_category:
+        | "health"
+        | "entrepreneurship"
+        | "accessibility"
+        | "eco"
+        | "training"
+        | "workshop"
+      help_category:
+        | "education"
+        | "food"
+        | "health"
+        | "shelter"
+        | "volunteering"
+        | "mental_wellness"
+        | "entrepreneurship"
+        | "eco_action"
+      organization_type: "ngo" | "donor" | "volunteer_group"
+      post_status: "open" | "in_progress" | "closed"
+      user_role: "user" | "volunteer" | "admin"
+      verification_status: "pending" | "approved" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +545,29 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      event_category: [
+        "health",
+        "entrepreneurship",
+        "accessibility",
+        "eco",
+        "training",
+        "workshop",
+      ],
+      help_category: [
+        "education",
+        "food",
+        "health",
+        "shelter",
+        "volunteering",
+        "mental_wellness",
+        "entrepreneurship",
+        "eco_action",
+      ],
+      organization_type: ["ngo", "donor", "volunteer_group"],
+      post_status: ["open", "in_progress", "closed"],
+      user_role: ["user", "volunteer", "admin"],
+      verification_status: ["pending", "approved", "rejected"],
+    },
   },
 } as const
